@@ -33,11 +33,12 @@
             {
                PrintMenu(user);
                correctLogin = MainMenu(user);
-
+               Console.WriteLine("Tryck enter för att komma tillbaka till huvudmeny");
+               Console.ReadKey();
 
             }
-            
 
+            
          }
       }
 
@@ -84,7 +85,7 @@
          Console.WriteLine("2. Låna Bok");
          Console.WriteLine("3. Lämna tillbaka bok");
          Console.WriteLine("4. Mina lån");
-         Console.WriteLine("5. Logga ut");
+         Console.WriteLine("5. Logga ut\n");
          Console.Write("Ange ditt val: ");
       }
 
@@ -105,7 +106,7 @@
          switch (input)
          {
             case 1:
-               // Visa Böcker
+               ShowBooks();
                break;
             case 2:
                //Låna bok
@@ -123,5 +124,15 @@
          }
          return true;
       }
+      static void ShowBooks()
+      {
+         Console.Clear();
+         for (int i = 0; i < 5; i++)
+         {
+            Console.WriteLine($"{titles[i]}\nExemplar:{copies[i]}\n");
+         }
+         
+      }
+
    }
 }
