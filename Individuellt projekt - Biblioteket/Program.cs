@@ -14,12 +14,31 @@
 
       static void Main(string[] args)
       {
-         string user = Login();
-         if(user != "failed")
+         bool running = true;
+
+         while (running)
          {
-            //Lägg meny här
+
+
+            string user = Login();
+            if (user == "failed")
+            {
+               Console.WriteLine("Programmet avslutas");
+               break;
+            }
+
+            // As long as mainMenu is true we run the program, as soon as it´s false (option 5) we exit the loop to the login again.
+            bool correctLogin = true;
+            while (correctLogin)
+            {
+               PrintMenu(user);
+               correctLogin = MainMenu(user);
+
+
+            }
+            
+
          }
-         
       }
 
       static string Login()
@@ -52,8 +71,57 @@
             attempts--;
             Console.WriteLine("Felaktigt användarnamn eller pinkod");
             Console.ReadKey();
+
          }
          return "failed";
+      }
+
+      static void PrintMenu(string user)
+      {
+         Console.Clear();
+         Console.WriteLine($"Användare:{user}\n");
+         Console.WriteLine("1. Visa böcker");
+         Console.WriteLine("2. Låna Bok");
+         Console.WriteLine("3. Lämna tillbaka bok");
+         Console.WriteLine("4. Mina lån");
+         Console.WriteLine("5. Logga ut");
+         Console.Write("Ange ditt val: ");
+      }
+
+      static int GetUserNumber(int min, int max)
+      {
+         int input;
+         while (!int.TryParse(Console.ReadLine(), out input))
+         {
+            Console.WriteLine($"Ogiltigt val, du måste ange en siffra mellan {min} & {max}");
+         }
+         return input;
+      }
+
+      // MainMenu is a bool - so we can control if the user wants to log out 
+      static bool MainMenu(string user)
+      {
+         int input = GetUserNumber(1, 5);
+         switch (input)
+         {
+            case 1:
+               // Visa Böcker
+               break;
+            case 2:
+               //Låna bok
+               break;
+            case 3:
+               // Lämna tillbaka bok
+               break;
+            case 4:
+               // Mina Lån
+               break;
+            case 5:
+               return false;
+               break;
+
+         }
+         return true;
       }
    }
 }
