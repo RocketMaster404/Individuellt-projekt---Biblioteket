@@ -6,7 +6,7 @@
       // Each user has a username, a PIN code, and an empty slot with space for 5 books to borrow. The number five represents the number of titles in the library
       static string[] userNames = { "Erik", "Pontus", "Julia", "Viktor", "Daniel" };
       static int[] pinCodes = { 1112, 1114, 1116, 1118, 1120 };
-      static string[] loans = new string[5];
+      static string[,] loans = new string[5,5];
 
       //Arrays for Books/copies.
       static string[] titles = { "Livet Deluxe", "VIP Rummet", "Snabba Cash", "Top Dog", "Paradise City" };
@@ -109,7 +109,7 @@
                ShowBooks();
                break;
             case 2:
-               //Låna bok
+               BorrowBook(user);
                break;
             case 3:
                // Lämna tillbaka bok
@@ -132,6 +132,56 @@
             Console.WriteLine($"{titles[i]}\nExemplar:{copies[i]}\n");
          }
          
+      }
+
+      static void BorrowBook(string userName)
+      {
+         Console.Clear();
+         for(int i = 0; i < 5; i++)
+         {
+            Console.WriteLine($"{i+1}. {titles[i]} | Tillgänglighet:{copies[i]}st");
+         }
+         Console.WriteLine("Ange boken du önskar låna: ");
+         int input = GetUserNumber(1, 5);
+         // BookMenu corrects the index so we don´t start at zero. 
+         int bookMenu = input - 1;
+
+         
+
+         // Save book to user, loop goes through the second index of 2d array (1).
+         int userIndex = userProfile(userName);
+         for(int i = 0; i < loans.GetLength(1); i++)
+         {
+            
+            if (loans[userIndex, i] == null)
+            {
+               loans[userIndex, i] = titles[bookMenu];// Sparar boken
+               copies[bookMenu]--;// Minska med en bok
+               Console.WriteLine($"Du har lånat {titles[bookMenu]}");
+               return;
+
+            }
+
+
+         }
+
+         
+      }
+
+      // This method is needes since we use a 2d array to save/remove books from users
+      static int userProfile(string userName)
+      {
+         //Loop to find the coorect user index (i), if we don´t find a match we return -1 (invalid number for array index)
+         for(int i = 0; i < 5; i++)
+         {
+            if (userNames[i] == userName)
+            {
+               return i;
+            }
+         }
+
+         return -1;
+
       }
 
    }
