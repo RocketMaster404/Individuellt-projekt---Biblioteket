@@ -18,8 +18,6 @@
 
          while (running)
          {
-
-
             string user = Login();
             if (user == "failed")
             {
@@ -113,11 +111,9 @@
                break;
             case 3:
                ReturnBook(user);
-               
                break;
             case 4:
                ShowLoans(user);
-               
                break;
             case 5:
                return false;
@@ -133,7 +129,6 @@
          {
             Console.WriteLine($"{titles[i]}\nExemplar:{copies[i]}\n");
          }
-         
       }
 
       static void BorrowBook(string userName)
@@ -154,23 +149,25 @@
          int userIndex = userProfile(userName);
          for(int i = 0; i < loans.GetLength(1); i++)
          {
-            
-            if (loans[userIndex, i] == null)
+
+            if (copies[bookMenu] == 0)
+            {
+               Console.WriteLine("Boken finns inte i lagret");
+            }
+            if (loans[userIndex, i] == null )
             {
                loans[userIndex, i] = titles[bookMenu];// Sparar boken
                copies[bookMenu]--;// Minska med en bok
                Console.WriteLine($"Du har lånat {titles[bookMenu]}");
                return;
 
-            }else if (loans[userIndex,i] != null)
-            {
-               Console.WriteLine("Du har redan använt alla dina platser");
             }
 
 
          }
-
          
+
+
       }
 
       // This method is needes since we use a 2d array to save/remove books from users
@@ -191,21 +188,59 @@
 
       static void ReturnBook(string userName)
       {
-         
+
          int userIndex = userProfile(userName);
          Console.Clear();
-         Console.WriteLine("Dina lån:");
+         Console.WriteLine("Dina lånade böcker:");
+         int count = 0;
 
-         for(int i = 0; i < loans.GetLength(1); i++)
+         // Visa användarens lån
+         for (int i = 0; i < loans.GetLength(1); i++)
          {
-            if (loans[userIndex,i]!= null)
+            if (loans[userIndex, i] != null)
             {
-               Console.WriteLine($"{i + 1}.{loans[userIndex, i]}");
+               count++;
+               Console.WriteLine($"{count}. {loans[userIndex, i]}");
             }
-            
          }
+
+         if (count == 0)
+         {
+            Console.WriteLine("Du har inga böcker att lämna tillbaka.");
+            return;
+         }
+
          Console.WriteLine("Vilken bok önskar du lämna tillbaka: ");
-         int input = GetUserNumber(1, 5);
+         int input = GetUserNumber(1, count);
+
+         // Hitta rätt plats i loans-arrayen baserat på input
+         int visIndex = 0;
+         for (int i = 0; i < loans.GetLength(1); i++)
+         {
+            if (loans[userIndex, i] != null)
+            {
+               visIndex++;
+               if (visIndex == input)
+               {
+                  string returnedBook = loans[userIndex, i];
+
+                  // Leta upp vilken bok i titles som ska ökas
+                  for (int j = 0; j < titles.Length; j++)
+                  {
+                     if (titles[j] == returnedBook)
+                     {
+                        copies[j]++;
+                        break;
+                     }
+                  }
+
+                  loans[userIndex, i] = null;
+                  Console.WriteLine($"Du har lämnat tillbaka \"{returnedBook}\".");
+                  return;
+               }
+            }
+         }
+
 
       }
 
