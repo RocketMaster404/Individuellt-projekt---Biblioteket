@@ -139,6 +139,7 @@
       static void BorrowBook(string userName)
       {
          Console.Clear();
+         // Show all books
          for(int i = 0; i < 5; i++)
          {
             Console.WriteLine($"{i+1}. {titles[i]} | Tillgänglighet:{copies[i]}st");
@@ -152,25 +153,30 @@
 
          // Save book to user, loop goes through the second index of 2d array (1).
          int userIndex = userProfile(userName);
-         for(int i = 0; i < loans.GetLength(1); i++)
+
+         // Check if we have the book in stock 
+
+         if (copies[bookMenu] == 0)
          {
-            
-            if (loans[userIndex, i] == null)
-            {
-               loans[userIndex, i] = titles[bookMenu];// Sparar boken
-               copies[bookMenu]--;// Minska med en bok
-               Console.WriteLine($"Du har lånat {titles[bookMenu]}");
-               return;
-
-            }else if (loans[userIndex,i] != null)
-            {
-               Console.WriteLine("Du har redan använt alla dina platser");
-            }
-
-
+            Console.WriteLine("Boken finns inte i lager");
+            return; 
          }
 
-         
+
+         // Adds the book to the user "loans.GetLength(1)" and then removes one copy
+         for (int i = 0; i < loans.GetLength(1); i++)
+         {
+            if (loans[userIndex, i] == null)
+            {
+               loans[userIndex, i] = titles[bookMenu];  // Lägg till bok
+               copies[bookMenu]--;                      // Minska lager
+               Console.WriteLine($"Du har lånat \"{titles[bookMenu]}\".");
+               return;
+            }
+         }
+
+         Console.WriteLine("Du har redan lånat max antal böcker");
+
       }
 
       // This method is needes since we use a 2d array to save/remove books from users
