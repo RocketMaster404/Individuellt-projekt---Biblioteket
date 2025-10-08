@@ -112,10 +112,12 @@
                BorrowBook(user);
                break;
             case 3:
-               // Lämna tillbaka bok
+               ReturnBook(user);
+               
                break;
             case 4:
-               // Mina Lån
+               ShowLoans(user);
+               
                break;
             case 5:
                return false;
@@ -160,6 +162,9 @@
                Console.WriteLine($"Du har lånat {titles[bookMenu]}");
                return;
 
+            }else if (loans[userIndex,i] != null)
+            {
+               Console.WriteLine("Du har redan använt alla dina platser");
             }
 
 
@@ -182,6 +187,48 @@
 
          return -1;
 
+      }
+
+      static void ReturnBook(string userName)
+      {
+         
+         int userIndex = userProfile(userName);
+         Console.Clear();
+         Console.WriteLine("Dina lån:");
+
+         for(int i = 0; i < loans.GetLength(1); i++)
+         {
+            if (loans[userIndex,i]!= null)
+            {
+               Console.WriteLine($"{i + 1}.{loans[userIndex, i]}");
+            }
+            
+         }
+         Console.WriteLine("Vilken bok önskar du lämna tillbaka: ");
+         int input = GetUserNumber(1, 5);
+
+      }
+
+      static void ShowLoans(string userName)
+      {
+         int count = 0;
+         int userIndex = userProfile(userName);
+         Console.Clear();
+        
+
+         for (int i = 0; i < loans.GetLength(1); i++)
+         {
+            if (loans[userIndex, i] != null)
+            {
+               Console.WriteLine($"Dina lån\n{i + 1}.{loans[userIndex, i]}");
+               count++;
+            }
+            
+         }
+         if (count == 0)
+         {
+            Console.WriteLine("Du har inga aktiva lån");
+         }
       }
 
    }
