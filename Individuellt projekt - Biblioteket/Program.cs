@@ -6,7 +6,7 @@
       // Each user has a username, a PIN code, and an empty slot with space for 5 books to borrow. The number five represents the number of titles in the library
       static string[] userNames = { "Erik", "Pontus", "Julia", "Viktor", "Daniel" };
       static int[] pinCodes = { 1112, 1114, 1116, 1118, 1120 };
-      static string[,] loans = new string[5,5];
+      static string[,] loans = new string[5, 5];
 
       //Arrays for Books/copies.
       static string[] titles = { "Livet Deluxe", "VIP Rummet", "Snabba Cash", "Top Dog", "Paradise City" };
@@ -35,8 +35,6 @@
                Console.ReadKey();
 
             }
-
-            
          }
       }
 
@@ -75,10 +73,10 @@
          return "failed";
       }
 
-      static void PrintMenu(string user)
+      static void PrintMenu(string userName)
       {
          Console.Clear();
-         Console.WriteLine($"Användare:{user}\n");
+         Console.WriteLine($"Användare:{userName}\n");
          Console.WriteLine("1. Visa böcker");
          Console.WriteLine("2. Låna Bok");
          Console.WriteLine("3. Lämna tillbaka bok");
@@ -117,8 +115,6 @@
                break;
             case 5:
                return false;
-               break;
-
          }
          return true;
       }
@@ -134,29 +130,27 @@
       static void BorrowBook(string userName)
       {
          Console.Clear();
-         // Show all books
-         for(int i = 0; i < 5; i++)
+         // Show all books and copies
+         for (int i = 0; i < 5; i++)
          {
-            Console.WriteLine($"{i+1}. {titles[i]} | Tillgänglighet:{copies[i]}st");
+            Console.WriteLine($"{i + 1}. {titles[i]} | Tillgänglighet:{copies[i]}st");
          }
          Console.WriteLine("Ange boken du önskar låna: ");
          int input = GetUserNumber(1, 5);
-         // BookMenu corrects the index so we don´t start at zero. 
-         int bookMenu = input - 1;
+         // corrects the index so we don´t start at zero. 
+         int bookIndex = input - 1;
 
-         
+
 
          // Save book to user, loop goes through the second index of 2d array (1).
-         int userIndex = userProfile(userName);
+         int userIndex = GetUserIndex(userName);
 
          // Check if we have the book in stock 
 
-         if (copies[bookMenu] == 0)
+         if (copies[bookIndex] == 0)
          {
-
-            if (copies[bookMenu] == 0)
             Console.WriteLine("Boken finns inte i lager");
-            return; 
+            return;
          }
 
 
@@ -165,47 +159,35 @@
          {
             if (loans[userIndex, i] == null)
             {
-               Console.WriteLine("Boken finns inte i lagret");
-            }
-            if (loans[userIndex, i] == null )
-            {
-               loans[userIndex, i] = titles[bookMenu];// Sparar boken
-               copies[bookMenu]--;// Minska med en bok
-               Console.WriteLine($"Du har lånat {titles[bookMenu]}");
-               loans[userIndex, i] = titles[bookMenu];  // Lägg till bok
-               copies[bookMenu]--;                      // Minska lager
-               Console.WriteLine($"Du har lånat \"{titles[bookMenu]}\".");
+               loans[userIndex, i] = titles[bookIndex];  
+               copies[bookIndex]--;                      
+               Console.WriteLine($"Du har lånat \"{titles[bookIndex]}\".");
                return;
             }
          }
-         
-
-
 
          Console.WriteLine("Du har redan lånat max antal böcker");
 
       }
 
       // This method is needes since we use a 2d array to save/remove books from users
-      static int userProfile(string userName)
+      static int GetUserIndex(string userName)
       {
          //Loop to find the coorect user index (i), if we don´t find a match we return -1 (invalid number for array index)
-         for(int i = 0; i < 5; i++)
+         for (int i = 0; i < 5; i++)
          {
             if (userNames[i] == userName)
             {
                return i;
             }
          }
-
          return -1;
-
       }
 
       static void ReturnBook(string userName)
       {
 
-         int userIndex = userProfile(userName);
+         int userIndex = GetUserIndex(userName);
          Console.Clear();
          Console.WriteLine("Dina lånade böcker:");
          int count = 0;
@@ -229,7 +211,7 @@
          Console.WriteLine("Vilken bok önskar du lämna tillbaka: ");
          int input = GetUserNumber(1, count);
 
-         // Hitta rätt plats i loans-arrayen baserat på input
+         // Find the right spot in loans array
          int visIndex = 0;
          for (int i = 0; i < loans.GetLength(1); i++)
          {
@@ -240,7 +222,7 @@
                {
                   string returnedBook = loans[userIndex, i];
 
-                  // Leta upp vilken bok i titles som ska ökas
+                  // Find the book
                   for (int j = 0; j < titles.Length; j++)
                   {
                      if (titles[j] == returnedBook)
@@ -263,18 +245,18 @@
       static void ShowLoans(string userName)
       {
          int count = 0;
-         int userIndex = userProfile(userName);
+         int userIndex = GetUserIndex(userName);
          Console.Clear();
-        
 
+         Console.WriteLine("Dina lån\n");
          for (int i = 0; i < loans.GetLength(1); i++)
          {
             if (loans[userIndex, i] != null)
             {
-               Console.WriteLine($"Dina lån\n{i + 1}.{loans[userIndex, i]}");
+               Console.WriteLine($"{i + 1}.{loans[userIndex, i]}");
                count++;
             }
-            
+
          }
          if (count == 0)
          {
