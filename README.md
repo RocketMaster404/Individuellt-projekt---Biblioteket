@@ -8,6 +8,24 @@ Each user has a profile where they can borrow books, return books, and view an o
 After the user has logged in, they are sent to the main menu. 
 They can choose an option 1-5 depending on what the would like to do. 
 
+Menu
+1. Visa Böcker
+2. Låna bok
+3. Lämna tillbaka bok
+4. Mina lån
+5. Logga ut
+
+1. Visa Böcker
+Shows the user all the books in the library
+2. Låna bok
+The user can choose an avalible book to borrow
+3. Lämna tillbaka bok
+The user can return a borrowed book 
+4. Mina lån
+Shows the user what books the y have borrowed. 
+5. Logga ut
+The user returns to the log in screeen. 
+The have 3 tries to completed the login in - if failed the program shuts down. 
 
 My solution.
 I choose to work with parallel arrays since all arrays had a fixed number of five. 
@@ -24,7 +42,8 @@ While loops my also occur as a security measure when we read input from users.
 Considered solutions 
 My first thought was to make an 2d array for the user/pincode, but changed the approach since it would make the pincode a string instead of an int. 
 I also tried to not use any 2d arrays but found it hard to tie the loans to the user. 
-At first my LogIn method was a bool to control if a user is logged in or not. This changed as I wanted to keep track of the logged in user. 
+At first my LogIn method was a bool to control if a user is logged in or not. This changed as I wanted to keep track of the logged in user.
+As it´s an school assignment we were limited to use arrays - otherwise i would consider a list and a user class. 
 
 
 Methods 
