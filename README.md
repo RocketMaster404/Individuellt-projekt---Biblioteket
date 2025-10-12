@@ -15,15 +15,20 @@ Menu
 4. Mina lån
 5. Logga ut
 
-1. Visa Böcker
+
+Visa Böcker:
 Shows the user all the books in the library
-2. Låna bok
+
+Låna bok:
 The user can choose an avalible book to borrow
-3. Lämna tillbaka bok
+
+Lämna tillbaka bok:
 The user can return a borrowed book 
-4. Mina lån
+
+Mina lån:
 Shows the user what books the y have borrowed. 
-5. Logga ut
+
+Logga ut:
 The user returns to the log in screeen. 
 The have 3 tries to completed the login in - if failed the program shuts down. 
 
