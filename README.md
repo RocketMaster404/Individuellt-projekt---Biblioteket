@@ -5,6 +5,10 @@ The program represents a loan system for a library.
 It includes five users with associated PIN codes.
 Each user has a profile where they can borrow books, return books, and view an overview of the library's collection as well as their current loans.
 
+After the user has logged in, they are sent to the main menu. 
+They can choose an option 1-5 depending on what the would like to do. 
+
+
 My solution.
 I choose to work with parallel arrays since all arrays had a fixed number of five. 
 For ex, if the user has index 0 I would use index 0 for all element (pincode, loans)
@@ -41,14 +45,15 @@ If the user is outside min/max an error accour and explains to the user they nee
 
 MainMenu()
 This is a Switch that reads a user input, each case represent the number given at PrintMenu(). 
+
 ShowBooks()
 This method loops through the arrays of title and copies. 
 It shows the user what books are available and how many. 
 
 BorrowBooks()
 This method makes the user Borrow a book. 
-It checks that the book is in stock, that the user have not reached their limit of 5 books. 
-If the loan is successful, the title of the book is saved at one of the spots in the 2d array loans (index 1), the user index is determined by GetUserIndex() method. 
+It checks that the book is in stock, that the user haven´t borrowed the same title and that the user have not reached their limit of 5 books. 
+If the loan is successful, the title of the book is saved at one of the spots in the 2d array loans (index 1), the user index is determined by GetUserIndex() method.
 
 GetUserIndex()
 A method that loops through the username array and find a match with the logged in user.
