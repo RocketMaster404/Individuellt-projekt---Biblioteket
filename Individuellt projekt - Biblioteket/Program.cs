@@ -1,5 +1,6 @@
 ﻿namespace Individuellt_projekt___Biblioteket
 {
+   // Erik Ny SUT-25
    internal class Program
    {
       // Arrays for the userprofiles, each user is tied to the index of array.
@@ -12,11 +13,12 @@
       static string[] titles = { "Livet Deluxe", "VIP Rummet", "Snabba Cash", "Top Dog", "Paradise City" };
       static int[] copies = { 2, 5, 3, 4, 5 };
 
+      
+
       static void Main(string[] args)
       {
-         bool running = true;
-
-         while (running)
+         
+         while (true)
          {
             string user = Login();
             if (user == "failed")
@@ -31,8 +33,12 @@
             {
                PrintMenu(user);
                correctLogin = MainMenu(user);
-               Console.WriteLine("Tryck enter för att komma tillbaka till huvudmeny");
-               Console.ReadKey();
+               if (correctLogin)
+               {
+                  Console.WriteLine("Tryck enter för att komma tillbaka till huvudmeny");
+                  Console.ReadKey();
+               }
+               
 
             }
          }
@@ -48,7 +54,7 @@
 
             Console.Clear();
             Console.Write("Ange ditt användarnamn: ");
-            string userName = Console.ReadLine();
+            string userName = Console.ReadLine().Trim();
             Console.Write("Ange din pinkod: ");
             while (!int.TryParse(Console.ReadLine(), out pinCode))
             {
@@ -56,7 +62,7 @@
             }
             // This loop goes through usernames and pincodes to find a match, since both arrayes have an index of 5 we use i<5. 
             // For each loop we count down with one attempts - if we reach zero the program returns "failed"
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < userNames.Length; i++)
             {
 
                if (userNames[i] == userName && pinCodes[i] == pinCode)
@@ -88,7 +94,7 @@
       static int GetUserNumber(int min, int max)
       {
          int input;
-         while (!int.TryParse(Console.ReadLine(), out input))
+         while (!int.TryParse(Console.ReadLine(), out input) || input < min || input > max)
          {
             Console.WriteLine($"Ogiltigt val, du måste ange en siffra mellan {min} & {max}");
          }
@@ -121,7 +127,7 @@
       static void ShowBooks()
       {
          Console.Clear();
-         for (int i = 0; i < 5; i++)
+         for (int i = 0; i < titles.Length; i++)
          {
             Console.WriteLine($"{titles[i]}\nExemplar:{copies[i]}\n");
          }
@@ -131,16 +137,14 @@
       {
          Console.Clear();
          // Show all books and copies
-         for (int i = 0; i < 5; i++)
+         for (int i = 0; i < titles.Length; i++)
          {
-            Console.WriteLine($"{i + 1}. {titles[i]} | Tillgänglighet:{copies[i]}st");
+            Console.WriteLine($"{i + 1}. {titles[i]} | {copies[i]}st");
          }
          Console.WriteLine("Ange boken du önskar låna: ");
          int input = GetUserNumber(1, 5);
          // corrects the index so we don´t start at zero. 
          int bookIndex = input - 1;
-
-
 
          // Save book to user, loop goes through the second index of 2d array (1).
          int userIndex = GetUserIndex(userName);
@@ -153,10 +157,23 @@
             return;
          }
 
+         // Check if the user already have the book
+
+         for(int i = 0; i < loans.GetLength(1); i++)
+         {
+            if (loans[userIndex, i] == titles[bookIndex])
+            {
+               Console.WriteLine("Du har redan lånat denna bok.");
+               return;
+            }
+         }
+
+         
 
          // Adds the book to the user "loans.GetLength(1)" and then removes one copy
          for (int i = 0; i < loans.GetLength(1); i++)
          {
+            
             if (loans[userIndex, i] == null)
             {
                loans[userIndex, i] = titles[bookIndex];  
@@ -174,7 +191,7 @@
       static int GetUserIndex(string userName)
       {
          //Loop to find the coorect user index (i), if we don´t find a match we return -1 (invalid number for array index)
-         for (int i = 0; i < 5; i++)
+         for (int i = 0; i < userNames.Length; i++)
          {
             if (userNames[i] == userName)
             {
@@ -211,7 +228,7 @@
          Console.WriteLine("Vilken bok önskar du lämna tillbaka: ");
          int input = GetUserNumber(1, count);
 
-         // Find the right spot in loans array
+         // VisIndex adjust so we always have the numbers in right order even thgough their array index is something else
          int visIndex = 0;
          for (int i = 0; i < loans.GetLength(1); i++)
          {
@@ -239,12 +256,12 @@
             }
          }
 
-
       }
 
       static void ShowLoans(string userName)
       {
-         int count = 0;
+         // VisIndex adjust so we always have the numbers in right order even thgough their array index is something else
+         int visIndex = 0;
          int userIndex = GetUserIndex(userName);
          Console.Clear();
 
@@ -253,16 +270,16 @@
          {
             if (loans[userIndex, i] != null)
             {
-               Console.WriteLine($"{i + 1}.{loans[userIndex, i]}");
-               count++;
+               visIndex++;
+               Console.WriteLine($"{visIndex}.{loans[userIndex, i]}");
+               
             }
 
          }
-         if (count == 0)
+         if (visIndex == 0)
          {
-            Console.WriteLine("Du har inga aktiva lån");
+            Console.WriteLine("Du har inga aktiva lån\n");
          }
       }
-
    }
 }
