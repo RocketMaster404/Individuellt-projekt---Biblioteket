@@ -12,9 +12,6 @@
       //Arrays for Books/copies.
       static string[] titles = { "Livet Deluxe", "VIP Rummet", "Snabba Cash", "Top Dog", "Paradise City" };
       static int[] copies = { 2, 5, 3, 4, 5 };
-
-      
-
       static void Main(string[] args)
       {
          
@@ -38,8 +35,6 @@
                   Console.WriteLine("Tryck enter för att komma tillbaka till huvudmeny");
                   Console.ReadKey();
                }
-               
-
             }
          }
       }
@@ -60,7 +55,7 @@
             {
                Console.WriteLine("Pinkoden består av endast siffror");
             }
-            // This loop goes through usernames and pincodes to find a match, since both arrayes have an index of 5 we use i<5. 
+            // This loop goes through usernames and pincodes to find a match. 
             // For each loop we count down with one attempts - if we reach zero the program returns "failed"
             for (int i = 0; i < userNames.Length; i++)
             {
@@ -168,9 +163,7 @@
             }
          }
 
-         
-
-         // Adds the book to the user "loans.GetLength(1)" and then removes one copy
+         // Adds the book to the user if there is a open spot in the array (null)
          for (int i = 0; i < loans.GetLength(1); i++)
          {
             
@@ -183,11 +176,12 @@
             }
          }
 
+         // If we don´t find an opening, tell the user it´s maximum is reached
          Console.WriteLine("Du har redan lånat max antal böcker");
 
       }
 
-      // This method is needes since we use a 2d array to save/remove books from users
+      // This method goes through the array and returns the index of the user, same index is later used in loans
       static int GetUserIndex(string userName)
       {
          //Loop to find the coorect user index (i), if we don´t find a match we return -1 (invalid number for array index)
@@ -200,7 +194,6 @@
          }
          return -1;
       }
-
       static void ReturnBook(string userName)
       {
 
@@ -209,7 +202,7 @@
          Console.WriteLine("Dina lånade böcker:");
          int count = 0;
 
-         // Visa användarens lån
+         // Show the users borrowed books
          for (int i = 0; i < loans.GetLength(1); i++)
          {
             if (loans[userIndex, i] != null)
@@ -219,6 +212,7 @@
             }
          }
 
+         // Check if the user have any books
          if (count == 0)
          {
             Console.WriteLine("Du har inga böcker att lämna tillbaka.");
